@@ -1,4 +1,4 @@
-package com.hjq.gson.factory.element;
+package com.coco.gson.power.element;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
@@ -7,8 +7,8 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.hjq.gson.factory.GsonFactory;
-import com.hjq.gson.factory.JsonCallback;
+import com.coco.gson.power.PowerGson;
+import com.coco.gson.power.JsonParseExceptionCallback;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -49,7 +49,7 @@ public class CollectionTypeAdapter<E> extends TypeAdapter<Collection<E>> {
 
         if (jsonToken != JsonToken.BEGIN_ARRAY) {
             in.skipValue();
-            JsonCallback callback = GsonFactory.getJsonCallback();
+            JsonParseExceptionCallback callback = PowerGson.getJsonParseExceptionCallback();
             if (callback != null) {
                 callback.onTypeException(mTypeToken, mFieldName, jsonToken);
             }

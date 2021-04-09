@@ -1,4 +1,4 @@
-package com.hjq.gson.factory.element;
+package com.coco.gson.power.element;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;

@@ -1,4 +1,4 @@
-package com.hjq.gson.factory.element;
+package com.coco.gson.power.element;
 
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;

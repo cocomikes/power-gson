@@ -1,4 +1,4 @@
-package com.hjq.gson.factory;
+package com.coco.gson.power;
 
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonToken;
@@ -9,7 +9,7 @@ import com.google.gson.stream.JsonToken;
  *    time   : 2021/02/02
  *    desc   : Json 解析异常监听器
  */
-public interface JsonCallback {
+public interface JsonParseExceptionCallback {
 
     /**
      * 类型解析异常

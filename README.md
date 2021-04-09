@@ -1,13 +1,11 @@
 # Gson 解析容错框架
 
-* 码云地址：[Gitee](https://gitee.com/getActivity/GsonFactory)
-
 #### Gradle 集成
 
 ```groovy
 dependencies {
-    // Gson 解析容错：https://github.com/getActivity/GsonFactory
-    implementation 'com.hjq.gson:factory:5.2'
+    // Gson 解析容错：https://github.com/cocomikes/power-gson
+    implementation 'com.github.cocomikes:power-gson:6.0'
     // Json 解析框架：https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.5'
 }
@@ -19,7 +17,7 @@ dependencies {
 
 ```java
 // 获取单例的 Gson 对象（已处理容错）
-Gson gson = GsonFactory.getSingletonGson();
+Gson gson = PowerGson.powerGsonBuilder().create();
 ```
 
 * 因为框架中的 Gson 对象已经对解析规则进行了容错处理
@@ -27,20 +25,18 @@ Gson gson = GsonFactory.getSingletonGson();
 #### 其他 API
 
 ```java
-// 设置自定义的 Gson 对象
-GsonFactory.setSingletonGson(Gson gson);
 
 // 创建一个 Gson 构建器（已处理容错）
-GsonBuilder gsonBuilder = GsonFactory.newGsonBuilder();
+GsonBuilder gsonBuilder = PowerGson.powerGsonBuilder();
 
 // 注册类型适配器
-GsonFactory.registerTypeAdapterFactory(TypeAdapterFactory factory);
+PowerGson.registerTypeAdapterFactory(TypeAdapterFactory factory);
 
 // 注册构造函数创建器
-GsonFactory.registerInstanceCreator(Type type, InstanceCreator<?> creator);
+PowerGson.registerInstanceCreator(Type type, InstanceCreator<?> creator);
 
 // 设置 Json 解析容错监听
-GsonFactory.setJsonCallback(new JsonCallback() {
+PowerGson.setJsonParseExceptionCallback(new JsonParseExceptionCallback() {
 
     @Override
     public void onTypeException(TypeToken<?> typeToken, String fieldName, JsonToken jsonToken) {
@@ -105,7 +101,7 @@ GsonFactory.setJsonCallback(new JsonCallback() {
 
 ```java
 Retrofit retrofit = new Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create(GsonFactory.getSingletonGson()))
+        .addConverterFactory(GsonConverterFactory.create(PowerGson.powerGsonBuilder().create()))
         .build();
 ```
 

@@ -1,22 +1,21 @@
-package com.hjq.gson.factory;
+package com.coco.gson.power;
 
 import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.ConstructorConstructor;
 import com.google.gson.internal.Excluder;
 import com.google.gson.internal.bind.TypeAdapters;
-import com.hjq.gson.factory.data.BigDecimalTypeAdapter;
-import com.hjq.gson.factory.data.BooleanTypeAdapter;
-import com.hjq.gson.factory.data.DoubleTypeAdapter;
-import com.hjq.gson.factory.data.FloatTypeAdapter;
-import com.hjq.gson.factory.data.IntegerTypeAdapter;
-import com.hjq.gson.factory.data.LongTypeAdapter;
-import com.hjq.gson.factory.data.StringTypeAdapter;
-import com.hjq.gson.factory.element.CollectionTypeAdapterFactory;
-import com.hjq.gson.factory.element.ReflectiveTypeAdapterFactory;
+import com.coco.gson.power.data.BigDecimalTypeAdapter;
+import com.coco.gson.power.data.BooleanTypeAdapter;
+import com.coco.gson.power.data.DoubleTypeAdapter;
+import com.coco.gson.power.data.FloatTypeAdapter;
+import com.coco.gson.power.data.IntegerTypeAdapter;
+import com.coco.gson.power.data.LongTypeAdapter;
+import com.coco.gson.power.data.StringTypeAdapter;
+import com.coco.gson.power.element.CollectionTypeAdapterFactory;
+import com.coco.gson.power.element.ReflectiveTypeAdapterFactory;
 
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
@@ -30,38 +29,25 @@ import java.util.List;
  *    time   : 2020/11/10
  *    desc   : Gson 解析容错适配器
  */
-public final class GsonFactory {
+public final class PowerGson {
 
     private static final HashMap<Type, InstanceCreator<?>> INSTANCE_CREATORS = new HashMap<>(0);
 
     private static final List<TypeAdapterFactory> TYPE_ADAPTER_FACTORIES = new ArrayList<TypeAdapterFactory>();
 
-    private static JsonCallback sJsonCallback;
+    private static JsonParseExceptionCallback sJsonParseExceptionCallback;
 
-    private static volatile Gson sGson;
-
-    private GsonFactory() {}
+    private PowerGson() {}
 
     /**
-     * 获取单例的 Gson 对象
+     * Json解析异常回调
      */
-    public static Gson getSingletonGson() {
-        // 加入双重校验锁
-        if(sGson == null) {
-            synchronized (GsonFactory.class) {
-                if(sGson == null){
-                    sGson = newGsonBuilder().create();
-                }
-            }
-        }
-        return sGson;
+    public static void setJsonParseExceptionCallback(JsonParseExceptionCallback callback) {
+        sJsonParseExceptionCallback = callback;
     }
 
-    /**
-     * 设置单例的 Gson 对象
-     */
-    public static void setSingletonGson(Gson gson) {
-        sGson = gson;
+    public static JsonParseExceptionCallback getJsonParseExceptionCallback() {
+        return sJsonParseExceptionCallback;
     }
 
     /**
@@ -69,14 +55,6 @@ public final class GsonFactory {
      */
     public static void registerTypeAdapterFactory(TypeAdapterFactory factory) {
         TYPE_ADAPTER_FACTORIES.add(factory);
-    }
-
-    public static void setJsonCallback(JsonCallback callback) {
-        GsonFactory.sJsonCallback = callback;
-    }
-
-    public static JsonCallback getJsonCallback() {
-        return sJsonCallback;
     }
 
     /**
@@ -92,7 +70,7 @@ public final class GsonFactory {
     /**
      * 创建 Gson 构建对象
      */
-    public static GsonBuilder newGsonBuilder() {
+    public static GsonBuilder powerGsonBuilder() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         for (TypeAdapterFactory typeAdapterFactory : TYPE_ADAPTER_FACTORIES) {
             gsonBuilder.registerTypeAdapterFactory(typeAdapterFactory);

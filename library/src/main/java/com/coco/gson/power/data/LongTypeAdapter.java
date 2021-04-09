@@ -1,4 +1,4 @@
-package com.hjq.gson.factory.data;
+package com.coco.gson.power.data;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -11,30 +11,30 @@ import java.math.BigDecimal;
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/GsonFactory
  *    time   : 2020/05/05
- *    desc   : int / Integer 类型解析适配器，参考：{@link com.google.gson.internal.bind.TypeAdapters#INTEGER}
+ *    desc   : long / Long 类型解析适配器，参考：{@link com.google.gson.internal.bind.TypeAdapters#LONG}
  */
-public class IntegerTypeAdapter extends TypeAdapter<Integer> {
+public class LongTypeAdapter extends TypeAdapter<Long> {
 
     @Override
-    public Integer read(JsonReader in) throws IOException {
+    public Long read(JsonReader in) throws IOException {
         switch (in.peek()) {
             case NUMBER:
                 try {
-                    return in.nextInt();
+                    return in.nextLong();
                 } catch (NumberFormatException e) {
                     // 如果带小数点则会抛出这个异常
-                    return (int) in.nextDouble();
+                    return new BigDecimal(in.nextString()).longValue();
                 }
             case STRING:
                 String result = in.nextString();
                 if (result == null || "".equals(result)) {
-                    return 0;
+                    return 0L;
                 }
                 try {
-                    return Integer.parseInt(result);
+                    return Long.parseLong(result);
                 } catch (NumberFormatException e) {
                     // 如果带小数点则会抛出这个异常
-                    return (int) new BigDecimal(result).floatValue();
+                    return new BigDecimal(result).longValue();
                 }
             case NULL:
                 in.nextNull();
@@ -46,7 +46,7 @@ public class IntegerTypeAdapter extends TypeAdapter<Integer> {
     }
 
     @Override
-    public void write(JsonWriter out, Integer value) throws IOException {
+    public void write(JsonWriter out, Long value) throws IOException {
         out.value(value);
     }
 }

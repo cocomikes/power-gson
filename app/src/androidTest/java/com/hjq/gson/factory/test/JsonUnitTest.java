@@ -8,8 +8,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonToken;
-import com.hjq.gson.factory.GsonFactory;
-import com.hjq.gson.factory.JsonCallback;
+import com.coco.gson.power.PowerGson;
+import com.coco.gson.power.JsonParseExceptionCallback;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.junit.After;
@@ -29,38 +29,57 @@ import java.io.InputStream;
  */
 public final class JsonUnitTest {
 
-    private Gson mGson;
+    private Gson mPowerGson;
+    private Gson mNormalGson;
 
     /**
      * 测试前
      */
     @Before
     public void onTestBefore() {
-        mGson = GsonFactory.getSingletonGson();
+        mPowerGson = PowerGson.powerGsonBuilder().create();
+        mNormalGson = new Gson();
         // 设置 Json 解析容错监听
-        GsonFactory.setJsonCallback(new JsonCallback() {
+        PowerGson.setJsonParseExceptionCallback(new JsonParseExceptionCallback() {
 
             @Override
             public void onTypeException(TypeToken<?> typeToken, String fieldName, JsonToken jsonToken) {
                 // Log.e("GsonFactory", "类型解析异常：" + typeToken + "#" + fieldName + "，后台返回的类型为：" + jsonToken);
-                // 上报到 Bugly 错误列表
-                CrashReport.postCatchedException(new IllegalArgumentException("类型解析异常：" + typeToken + "#" + fieldName + "，后台返回的类型为：" + jsonToken));
+                Log.e("Power-Gson","", new IllegalArgumentException("类型解析异常：" + typeToken + "#" + fieldName + "，后台返回的类型为：" + jsonToken));
             }
         });
     }
 
     @Test
-    public void onSpecification() {
+    public void onSpecificationWithPowerGson() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "Specification.json");
-        mGson.fromJson(json, JsonBean.class);
+        JsonBean jsonBean = mPowerGson.fromJson(json, JsonBean.class);
+        assert jsonBean != null;
     }
 
     @Test
-    public void onNoSpecification() {
+    public void onNoSpecificationWithPowerGson() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "NoSpecification.json");
-        mGson.fromJson(json, JsonBean.class);
+        JsonBean jsonBean = mPowerGson.fromJson(json, JsonBean.class);
+        assert jsonBean != null;
+    }
+
+    @Test
+    public void onSpecificationWithNormalGson() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        String json = getAssetsString(context, "Specification.json");
+        JsonBean jsonBean = mNormalGson.fromJson(json, JsonBean.class);
+        assert jsonBean != null;
+    }
+
+    @Test
+    public void onNoSpecificationWithNormalGson() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        String json = getAssetsString(context, "NoSpecification.json");
+        JsonBean jsonBean = mNormalGson.fromJson(json, JsonBean.class);
+        assert jsonBean != null;
     }
 
     /**
@@ -68,7 +87,8 @@ public final class JsonUnitTest {
      */
     @After
     public void onTestAfter() {
-        mGson = null;
+        mPowerGson = null;
+        mNormalGson = null;
     }
 
     /**

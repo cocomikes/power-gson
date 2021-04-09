@@ -1,0 +1,1 @@
+-keep class com.coco.gson.power.* {*;}
