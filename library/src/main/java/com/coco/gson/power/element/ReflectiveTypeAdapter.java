@@ -50,7 +50,14 @@ public class ReflectiveTypeAdapter<T> extends TypeAdapter<T> {
             in.skipValue();
             JsonParseExceptionCallback callback = PowerGson.getJsonParseExceptionCallback();
             if (callback != null) {
-                callback.onTypeException(mTypeToken, mFieldName, jsonToken);
+                StringBuilder exField = new StringBuilder();
+                if(mConstructor != null){
+                    if(mConstructor.construct() != null){
+                        exField.append(mConstructor.construct().getClass().getName()).append("#");
+                    }
+                }
+                exField.append(mFieldName);
+                callback.onTypeException(mTypeToken, exField.toString(), jsonToken);
             }
             return null;
         }

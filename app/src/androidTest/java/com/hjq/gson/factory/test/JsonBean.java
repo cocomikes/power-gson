@@ -11,7 +11,7 @@ import java.util.List;
  */
 public final class JsonBean {
 
-    private List<String> listTest1;
+    private TestBean listTest1;
     private List<String> listTest2;
     private List<Integer> listTest3;
     private List<Boolean> listTest4;
