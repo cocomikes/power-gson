@@ -9,6 +9,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.coco.gson.power.JsonParseExceptionCallback;
 import com.coco.gson.power.PowerGson;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonToken;
 
@@ -41,7 +42,7 @@ public final class JsonUnitTest{
     @Before
     public void onTestBefore() {
         mPowerGson = PowerGson.powerGsonBuilder().create();
-        mNormalGson = new Gson();
+        mNormalGson = new GsonBuilder().serializeNulls().create();
         // 设置 Json 解析容错监听
         PowerGson.setJsonParseExceptionCallback(new JsonParseExceptionCallback() {
 
@@ -53,34 +54,34 @@ public final class JsonUnitTest{
     }
 
     @Test
-    public void testApiResponseWithPowerGson() {
+    public void testApiResponseWithJavaBean() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "apiResponse.json");
-        ApiResponse<JsonBean> jsonBean = mPowerGson.fromJson(json, new TypeToken<ApiResponse<JsonBean>>(){}.getType());
+        ApiResponse<JavaBean> jsonBean = mPowerGson.fromJson(json, new TypeToken<ApiResponse<JavaBean>>(){}.getType());
         Assert.assertNotNull(jsonBean);
     }
 
     @Test
-    public void testSpecificationWithPowerGson() {
+    public void testSpecificationWithJavaBean() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "Specification.json");
-        JsonBean jsonBean = mPowerGson.fromJson(json, JsonBean.class);
-        Assert.assertNotNull(jsonBean);
+        JavaBean javaBean = mPowerGson.fromJson(json, JavaBean.class);
+        Assert.assertNotNull(javaBean);
     }
 
     @Test
-    public void testNoSpecificationWithPowerGson() {
+    public void testNoSpecificationWithJavaBean() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "NoSpecification.json");
-        JsonBean jsonBean = mPowerGson.fromJson(json, JsonBean.class);
-        Assert.assertNotNull(jsonBean);
+        JavaBean javaBean = mPowerGson.fromJson(json, JavaBean.class);
+        Assert.assertNotNull(javaBean);
     }
 
     @Test
     public void testApiResponseWithNormalGson() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "apiResponse.json");
-        ApiResponse<JsonBean> jsonBean = mNormalGson.fromJson(json, new TypeToken<ApiResponse<JsonBean>>(){}.getType());
+        ApiResponse<JavaBean> jsonBean = mNormalGson.fromJson(json, new TypeToken<ApiResponse<JavaBean>>(){}.getType());
         Assert.assertNotNull(jsonBean);
     }
 
@@ -88,16 +89,34 @@ public final class JsonUnitTest{
     public void testSpecificationWithNormalGson() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "Specification.json");
-        JsonBean jsonBean = mNormalGson.fromJson(json, JsonBean.class);
-        Assert.assertNotNull(jsonBean);
+        JavaBean javaBean = mNormalGson.fromJson(json, JavaBean.class);
+        Assert.assertNotNull(javaBean);
     }
 
     @Test
     public void testNoSpecificationWithNormalGson() {
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "NoSpecification.json");
-        JsonBean jsonBean = mNormalGson.fromJson(json, JsonBean.class);
-        Assert.assertNotNull(jsonBean);
+        JavaBean javaBean = mNormalGson.fromJson(json, JavaBean.class);
+        Assert.assertNotNull(javaBean);
+    }
+
+    @Test
+    public void testPersonWithPowserGson() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        String json = getAssetsString(context, "person.json");
+        KotlinPerson javaBean = mPowerGson.fromJson(json, KotlinPerson.class);
+        System.out.println(javaBean.toString());
+        Assert.assertNotNull(javaBean);
+    }
+
+    @Test
+    public void testPersonWithNormalGson() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        String json = getAssetsString(context, "person.json");
+        KotlinPerson javaBean = mNormalGson.fromJson(json, KotlinPerson.class);
+        System.out.println(javaBean.toString());
+        Assert.assertNotNull(javaBean);
     }
 
     /**

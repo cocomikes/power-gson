@@ -9,7 +9,7 @@ import java.util.List;
  *    time   : 2020/11/10
  *    desc   : Gson 解析容错模拟数据
  */
-public final class JsonBean {
+public final class JavaBean {
 
     private TestBean listTest1;
     private List<String> listTest2;
