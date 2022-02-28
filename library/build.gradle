@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 30
-        versionCode 60
-        versionName "6.0"
+        versionCode 61
+        versionName "6.1"
 
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -23,5 +23,5 @@ android {
 
 dependencies {
     // Json 解析框架：https://github.com/google/gson
-    compileOnly 'com.google.code.gson:gson:2.8.6'
+    compileOnly 'com.google.code.gson:gson:2.8.8'
 }
