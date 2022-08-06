@@ -115,8 +115,9 @@ public final class JsonUnitTest{
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
         String json = getAssetsString(context, "person.json");
         KotlinPerson javaBean = mNormalGson.fromJson(json, KotlinPerson.class);
-        System.out.println(javaBean.toString());
-        Assert.assertNotNull(javaBean);
+        Log.d("mikes_cc", javaBean.toString());
+//        Assert.assertNotNull(javaBean);
+        Assert.assertEquals(1, javaBean.getStatus());
     }
 
     /**
