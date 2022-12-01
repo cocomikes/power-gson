@@ -3,12 +3,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 11
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 61
         versionName "6.1"
 
@@ -23,5 +22,5 @@ android {
 
 dependencies {
     // Json 解析框架：https://github.com/google/gson
-    compileOnly 'com.google.code.gson:gson:2.8.8'
+    compileOnly 'com.google.code.gson:gson:2.8.9'
 }
