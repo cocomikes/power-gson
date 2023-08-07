@@ -22,5 +22,5 @@ android {
 
 dependencies {
     // Json 解析框架：https://github.com/google/gson
-    compileOnly 'com.google.code.gson:gson:2.8.9'
+    compileOnly 'com.google.code.gson:gson:2.9.0'
 }

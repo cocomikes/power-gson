@@ -1,6 +1,7 @@
 package com.coco.gson.power;
 
 import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
 import com.google.gson.TypeAdapterFactory;
@@ -75,7 +76,7 @@ public final class PowerGson {
         for (TypeAdapterFactory typeAdapterFactory : TYPE_ADAPTER_FACTORIES) {
             gsonBuilder.registerTypeAdapterFactory(typeAdapterFactory);
         }
-        ConstructorConstructor constructor = new ConstructorConstructor(INSTANCE_CREATORS);
+        ConstructorConstructor constructor = new ConstructorConstructor(INSTANCE_CREATORS, true);
         return gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(String.class, new StringTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(boolean.class, Boolean.class, new BooleanTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter()))
@@ -91,7 +92,7 @@ public final class PowerGson {
         for (TypeAdapterFactory typeAdapterFactory : TYPE_ADAPTER_FACTORIES) {
             gsonBuilder.registerTypeAdapterFactory(typeAdapterFactory);
         }
-        ConstructorConstructor constructor = new ConstructorConstructor(INSTANCE_CREATORS);
+        ConstructorConstructor constructor = new ConstructorConstructor(INSTANCE_CREATORS, true);
         return gsonBuilder.registerTypeAdapterFactory(TypeAdapters.newFactory(String.class, new StringTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(boolean.class, Boolean.class, new BooleanTypeAdapter()))
                 .registerTypeAdapterFactory(TypeAdapters.newFactory(int.class, Integer.class, new IntegerTypeAdapter()))
