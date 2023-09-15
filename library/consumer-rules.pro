@@ -1,1 +1,2 @@
--keep class com.coco.gson.power.* {*;}
+-keep class com.coco.gson.power.* { *; }
+-keep class com.google.gson.internal.ConstructorConstructor { *; }
